@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,8 +9,33 @@ public class Hand {
     // throws them into discard pile
     // redraws
 
+    private Player player;
     private int playerIdx;
     private List<Card> actualCardsOnHand;
+    private List<Card> cards;
+
+    public Hand(Player p) {
+        this.player = p;
+        playerIdx = player.getPlayerIndex();
+        actualCardsOnHand = new ArrayList<>();
+        cards = new ArrayList<>();
+    }
+
+    public int getPlayerIdx() {
+        return playerIdx;
+    }
+
+    public void setPlayerIdx(int playerIdx) {
+        this.playerIdx = playerIdx;
+    }
+
+    public List<Card> getActualCardsOnHand() {
+        return actualCardsOnHand;
+    }
+
+    public void setActualCardsOnHand(List<Card> actualCardsOnHand) {
+        this.actualCardsOnHand = actualCardsOnHand;
+    }
 
     public Optional<List<Card>> pickCards(List<HandPosition> positions) {
         return null;
@@ -25,10 +51,6 @@ public class Hand {
 
     public HandPosition hasCardOfType(CardType type) {
         return null;
-    }
-
-    public List<Card> getCards() {
-        return actualCardsOnHand;
     }
 
 }

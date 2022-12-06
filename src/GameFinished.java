@@ -4,7 +4,6 @@ import java.util.Optional;
 
 public class GameFinished implements GameFinishedStrategy {
 
-    private static final String Map = null;
     private Game game;
     private int scorePoints;
     private int scoreQueens;
