@@ -50,6 +50,11 @@ public class Hand {
     }
 
     public HandPosition hasCardOfType(CardType type) {
+        for (int card = 0; card < actualCardsOnHand.size(); card++) {
+            if (actualCardsOnHand.get(card).getType() == type) {
+                return new HandPosition(card, playerIdx);
+            }
+        }
         return null;
     }
 
