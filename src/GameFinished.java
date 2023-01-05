@@ -24,7 +24,7 @@ public class GameFinished implements GameFinishedStrategy {
     public Optional<Integer> isFinished() {
         Map<Integer, Integer> score = new HashMap<>(); //// num of score of q for each player
         Map<Integer, Integer> queens = new HashMap<>(); // num of awQ for each player
-        for (Map.Entry<AwokenQueenPosition, Queen> queen : game.getState().awokenQueens.entrySet()) {
+        for (Map.Entry<AwokenQueenPosition, Queen> queen : game.getGameState().awokenQueens.entrySet()) {
             int indexOfPlayer = queen.getKey().getPlayerIndex();
             score.put(indexOfPlayer, queen.getValue().getPoints() + score.getOrDefault(indexOfPlayer, 0));
             queens.put(indexOfPlayer, queens.getOrDefault(indexOfPlayer, 0) + 1);

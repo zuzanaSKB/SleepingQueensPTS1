@@ -18,7 +18,7 @@ public class AwokenQueens extends QueenCollection {
     }
 
     @Override
-    Optional<Queen> removeQueen(SleepingQueenPosition position) {
+    Optional<Queen> removeQueen(Position position) {
         int indexToRemove = position.getCardIndex();
         Optional<Queen> removedQ = Optional.ofNullable(queens.remove(position));
         for (Map.Entry<Position, Queen> queen : queens.entrySet()) {

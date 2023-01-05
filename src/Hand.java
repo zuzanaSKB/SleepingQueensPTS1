@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,14 +12,15 @@ public class Hand {
 
     private Player player;
     private int playerIdx;
-    private List<Card> actualCardsOnHand;
+    private List<Card> pickedCards;
     private List<Card> cards;
 
     public Hand(Player p) {
         this.player = p;
         playerIdx = player.getPlayerIndex();
-        actualCardsOnHand = new ArrayList<>();
+        pickedCards = new ArrayList<>();
         cards = new ArrayList<>();
+        cards.addAll(player.getGame().getDrawingAndTrashPile().drawFullHandCards());
     }
 
     public int getPlayerIdx() {
@@ -29,29 +31,39 @@ public class Hand {
         this.playerIdx = playerIdx;
     }
 
-    public List<Card> getActualCardsOnHand() {
-        return actualCardsOnHand;
-    }
-
-    public void setActualCardsOnHand(List<Card> actualCardsOnHand) {
-        this.actualCardsOnHand = actualCardsOnHand;
+    public List<Card> getCards() {
+        return cards;
     }
 
     public Optional<List<Card>> pickCards(List<HandPosition> positions) {
-        return null;
+        if (positions.isEmpty()) {
+            return Optional.empty();
+        }
+        for (HandPosition handPosition : positions) {
+            pickedCards.add(cards.get(handPosition.getCardIndex()));
+        }
+        return Optional.of(pickedCards);
     }
 
     public Map<HandPosition, Card> removePickedCardsAndRedraw() {
-        return null;
+        cards.removeAll(pickedCards);
+        List<Card> drawnCards = player.getGame().getDrawingAndTrashPile().discardAndDraw(pickedCards);
+        Map<HandPosition, Card> handCards = new HashMap<>();
+        for (int i = 0; i < drawnCards.size(); i++) {
+            handCards.put(new HandPosition(cards.size() + i, playerIdx), drawnCards.get(i));
+        }
+        cards.addAll(drawnCards);
+        returnPickedCards();
+        return handCards;
     }
 
     public void returnPickedCards() {
-
+        pickedCards.clear();
     }
 
     public HandPosition hasCardOfType(CardType type) {
-        for (int card = 0; card < actualCardsOnHand.size(); card++) {
-            if (actualCardsOnHand.get(card).getType() == type) {
+        for (int card = 0; card < cards.size(); card++) {
+            if (cards.get(card).getType() == type) {
                 return new HandPosition(card, playerIdx);
             }
         }

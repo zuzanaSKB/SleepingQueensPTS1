@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class EvaluateAttack {
 
     // evaluetes Knight and Sleeping potion play
@@ -13,10 +15,22 @@ public class EvaluateAttack {
     }
 
     public boolean play(Position targetQueen, int targetPlayerIndex) {
-        if (targetPlayerIdx >= player.getGame().getPlayers().size())
+        if (targetPlayerIndex >= player.getGame().getPlayers().size())
             return false;
         if (!player.getGame().getPlayers().get(targetPlayerIndex).getAwokenQueens().getQueens()
                 .containsKey(targetQueen))
             return false;
+        HandPosition defenseCardHandPosition = player.getGame().getPlayers().get(targetPlayerIndex).getHand()
+                .hasCardOfType(defenseCardType);
+        if (defenseCardHandPosition == null) {
+            MoveQueen moveQ = new MoveQueen(player, queens);
+            moveQ.play(targetQueen);
+        } else {
+            ArrayList<HandPosition> defenseCardList = new ArrayList<>();
+            defenseCardList.add(defenseCardHandPosition);
+            player.getGame().getPlayers().get(targetPlayerIndex).getHand().pickCards(defenseCardList);
+            player.getGame().getPlayers().get(targetPlayerIndex).getHand().removePickedCardsAndRedraw();
+        }
+        return true;
     }
 }
